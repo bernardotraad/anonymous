@@ -143,7 +143,7 @@ function calcularQuantidade() {
 
     const quantidade = Math.floor(valorDesejado / precoFinalPorUnidade);
 
-    document.getElementById('resultadoQuantidade').innerText = `Com R$${valorDesejado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}, você pode comprar aproximadamente ${quantidade} munições de ${tipoMunicao}.`;
+    document.getElementById('resultadoQuantidade').innerText = `R$${valorDesejado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} compram ${quantidade} munições de ${tipoMunicao}.`;
 }
 
 function limpar() {
