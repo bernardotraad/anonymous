@@ -31,6 +31,8 @@ function calcular() {
     };
 
     let valido = true;
+    let totalQuantidade = 0;
+
     for (let key in quantidade) {
         const input = document.getElementById(key);
         const erroMsg = document.getElementById(`erro${capitalize(key)}`);
@@ -42,6 +44,14 @@ function calcular() {
             erroMsg.innerText = '';
             input.classList.remove('invalid');
         }
+        totalQuantidade += quantidade[key];
+    }
+
+    if (totalQuantidade === 0) {
+        document.getElementById('mensagemErro').innerText = "Por favor, insira pelo menos uma quantidade de munição.";
+        return;
+    } else {
+        document.getElementById('mensagemErro').innerText = "";
     }
 
     if (!valido) {
@@ -87,6 +97,21 @@ function calcular() {
     document.getElementById('mensagemSucesso').style.display = 'block';
 
     salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, desconto);
+}
+
+function limpar() {
+    document.getElementById('municaoForm').reset();
+    document.getElementById('aplicarDesconto').checked = false;
+    document.getElementById('descontoPredefinido').value = "";
+    document.getElementById('desconto').value = "";
+    document.getElementById('descontoPredefinido').disabled = true;
+    document.getElementById('desconto').disabled = true;
+    document.getElementById('resultado').innerText = "";
+    document.getElementById('mensagemSucesso').innerText = "";
+    document.getElementById('mensagemErro').innerText = "";
+    document.querySelectorAll('input').forEach(input => input.classList.remove('invalid'));
+    document.querySelectorAll('small.error-message').forEach(small => small.innerText = "");
+    localStorage.removeItem('configuracoesMunicao');
 }
 
 function salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, desconto) {
