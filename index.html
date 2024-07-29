@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora de Munição</title>
     <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
@@ -13,7 +13,7 @@
         <p>Digite abaixo o número de munições:</p>
         <div class="form-container">
             <div class="form-column">
-                <h2>Tipos de Munição</h2>
+                <h2>Tipo de Munição</h2>
                 <form id="municaoForm">
                     <label for="pistola">Munição de Pistola (100 = R$110k):</label>
                     <input type="number" id="pistola" name="pistola" placeholder="Quantidade de pistola" min="0">
@@ -35,17 +35,20 @@
                     <input type="number" id="sniper" name="sniper" placeholder="Quantidade de sniper" min="0">
                     <small id="erroSniper" class="error-message"></small><br>
                 </form>
+                <hr>
+                <div id="resultado"></div>
+                <div id="mensagemSucesso" class="success-message"></div>
+                <div id="mensagemErro" class="error-message"></div>
             </div>
             <div class="form-column">
                 <h2>Descontos</h2>
                 <form>
                     <div class="checkbox-container">
                         <input type="checkbox" id="aplicarDesconto" name="aplicarDesconto">
-                        <label for="aplicarDesconto" class="checkbox-container">Aplicar Desconto</label>
+                        <label for="aplicarDesconto">Aplicar Desconto</label>
                     </div>
                     <label for="descontoPredefinido">Desconto Predefinido:</label>
                     <select id="descontoPredefinido" name="descontoPredefinido" disabled>
-                        <option value="">Selecione</option>
                         <option value="50">50%</option>
                         <option value="60">60%</option>
                     </select><br>
@@ -55,9 +58,22 @@
                     <small id="erroDesconto" class="error-message"></small><br>
                 </form>
                 <hr>
-                <div id="resultado"></div>
-                <div id="mensagemSucesso" class="success-message"></div>
-                <div id="mensagemErro" class="error-message"></div>
+                <h2>Calcular Quantidade por Valor</h2>
+                <form>
+                    <label for="valorDesejado">Valor Desejado:</label>
+                    <input type="number" id="valorDesejado" name="valorDesejado" placeholder="Valor em R$" min="0">
+                    <label for="tipoMunicao">Tipo de Munição:</label>
+                    <select id="tipoMunicao" name="tipoMunicao">
+                        <option value="pistola">Pistola</option>
+                        <option value="fuzil">Fuzil</option>
+                        <option value="sub">Sub-metralhadora</option>
+                        <option value="escopeta">Escopeta</option>
+                        <option value="sniper">Sniper</option>
+                    </select><br>
+                    <button type="button" onclick="calcularQuantidade()">Calcular Quantidade</button>
+                </form>
+                <div id="resultadoQuantidade"></div>
+                <hr>
             </div>
         </div>
         <div class="button-container">

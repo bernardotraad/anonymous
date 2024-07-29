@@ -99,6 +99,53 @@ function calcular() {
     salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, desconto);
 }
 
+function calcularQuantidade() {
+    const precos = {
+        pistola: 110000 / 100,
+        fuzil: 72000 / 100,
+        sub: 72000 / 100,
+        escopeta: 165000 / 15,
+        sniper: 700000 / 10
+    };
+
+    const valorDesejado = parseFloat(document.getElementById('valorDesejado').value) || 0;
+    const tipoMunicao = document.getElementById('tipoMunicao').value;
+
+    if (valorDesejado <= 0 || isNaN(valorDesejado)) {
+        document.getElementById('resultadoQuantidade').innerText = "Por favor, insira um valor válido.";
+        return;
+    }
+
+    const aplicarDesconto = document.getElementById('aplicarDesconto').checked;
+    const descontoPredefinido = document.getElementById('descontoPredefinido').value;
+    const desconto = document.getElementById('desconto').value;
+
+    let descontoPercentual = 0;
+    if (aplicarDesconto) {
+        if (descontoPredefinido) {
+            descontoPercentual = parseFloat(descontoPredefinido);
+        } else if (desconto) {
+            descontoPercentual = parseFloat(desconto);
+        }
+
+        if (descontoPercentual < 0 || descontoPercentual > 100 || isNaN(descontoPercentual)) {
+            document.getElementById('resultadoQuantidade').innerText = "Por favor, insira uma porcentagem de desconto válida entre 0 e 100.";
+            return;
+        }
+    }
+
+    const precoPorUnidade = precos[tipoMunicao];
+    let precoFinalPorUnidade = precoPorUnidade;
+
+    if (descontoPercentual > 0) {
+        precoFinalPorUnidade -= precoFinalPorUnidade * (descontoPercentual / 100);
+    }
+
+    const quantidade = Math.floor(valorDesejado / precoFinalPorUnidade);
+
+    document.getElementById('resultadoQuantidade').innerText = `Com R$${valorDesejado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}, você pode comprar aproximadamente ${quantidade} munições de ${tipoMunicao}.`;
+}
+
 function limpar() {
     document.getElementById('municaoForm').reset();
     document.getElementById('aplicarDesconto').checked = false;
@@ -106,7 +153,10 @@ function limpar() {
     document.getElementById('desconto').value = "";
     document.getElementById('descontoPredefinido').disabled = true;
     document.getElementById('desconto').disabled = true;
+    document.getElementById('valorDesejado').value = "";
+    document.getElementById('tipoMunicao').value = "pistola";
     document.getElementById('resultado').innerText = "";
+    document.getElementById('resultadoQuantidade').innerText = "";
     document.getElementById('mensagemSucesso').innerText = "";
     document.getElementById('mensagemErro').innerText = "";
     document.querySelectorAll('input').forEach(input => input.classList.remove('invalid'));
@@ -119,7 +169,9 @@ function salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, d
         quantidade,
         aplicarDesconto,
         descontoPredefinido,
-        desconto
+        desconto,
+        valorDesejado: document.getElementById('valorDesejado').value,
+        tipoMunicao: document.getElementById('tipoMunicao').value
     };
     localStorage.setItem('configuracoesMunicao', JSON.stringify(configuracoes));
 }
@@ -147,6 +199,9 @@ function carregarConfiguracoes() {
 
         descontoPredefinido.value = configuracoes.descontoPredefinido || "";
         desconto.value = configuracoes.desconto || "";
+
+        document.getElementById('valorDesejado').value = configuracoes.valorDesejado || "";
+        document.getElementById('tipoMunicao').value = configuracoes.tipoMunicao || "pistola";
     }
 }
 
