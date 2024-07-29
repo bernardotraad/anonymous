@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+body {
+    background-color: #121212;
+    color: white;
+    font-family: 'Roboto', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.container {
+    text-align: center;
+    width: 100%;
+    max-width: 600px;
+}
+
+h1 {
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 1em;
+    margin-bottom: 20px;
+}
+
+form {
+    margin: 20px 0;
+}
+
+label, input, select {
+    display: block;
+    margin: 10px auto;
+    width: 90%;
+    max-width: 300px;
+}
+
+input, select {
+    padding: 10px;
+    background-color: #1f1f1f;
+    border: 1px solid #444;
+    color: white;
+    font-size: 1em;
+    box-sizing: border-box;
+}
+
+input.invalid, select.invalid {
+    border-color: red;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.8em;
+    height: 1em;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #444;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: 1em;
+}
+
+button:hover {
+    background-color: #666;
+}
+
+#resultado {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+
+.success-message {
+    color: green;
+    font-size: 1.2em;
+    margin-top: 20px;
+    display: none;
+}
+
+@media (max-width: 600px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    p, label, input, select, button, .error-message, .success-message {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 400px) {
+    h1 {
+        font-size: 1.2em;
+    }
+
+    p, label, input, select, button, .error-message, .success-message {
+        font-size: 0.8em;
+    }
+}
