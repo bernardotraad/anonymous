@@ -59,12 +59,13 @@ label, input, select {
 }
 
 .checkbox-container {
+    margin-right: 50px;
     display: flex;
     align-items: center;
 }
 
 .checkbox-container input {
-    margin-right: -210px;
+    margin-right: -150px;
     transform: scale(1.2);
 }
 
