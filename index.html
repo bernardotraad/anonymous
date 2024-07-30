@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora de Munição</title>
+    <title>Anonymous - Calculadora de Munição</title>
     <link rel="stylesheet" href="styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
-        <h1 class="form-titulo">Calculadora para Valores de Munição</h1>
+        <h1 class="form-titulo">Calculadora de Vendas</h1>
         <div class="form-container">
             <div class="form-column">
                 <h2>Tipo de Munição</h2>
@@ -48,6 +48,7 @@
                     </div>
                     <label for="descontoPredefinido">Desconto Predefinido:</label>
                     <select id="descontoPredefinido" name="descontoPredefinido" disabled>
+                        <option value="">Desconto</option>
                         <option value="50">50% (parcerias)</option>
                         <option value="60">60% (parcerias - chefes)</option>
                     </select><br>
@@ -76,7 +77,6 @@
             </div>
         </div>
         <div class="button-container">
-            <button type="button" onclick="calcular()">Calcular</button>
             <button type="button" onclick="limpar()">Limpar</button>
         </div>
     </div>

@@ -1,7 +1,32 @@
-document.getElementById('aplicarDesconto').addEventListener('change', function() {
-    const descontoPredefinido = document.getElementById('descontoPredefinido');
-    const desconto = document.getElementById('desconto');
+// Cache DOM elements to avoid repeated lookups
+const formElements = {
+    pistola: document.getElementById('pistola'),
+    fuzil: document.getElementById('fuzil'),
+    sub: document.getElementById('sub'),
+    escopeta: document.getElementById('escopeta'),
+    sniper: document.getElementById('sniper'),
+    aplicarDesconto: document.getElementById('aplicarDesconto'),
+    descontoPredefinido: document.getElementById('descontoPredefinido'),
+    desconto: document.getElementById('desconto'),
+    valorDesejado: document.getElementById('valorDesejado'),
+    tipoMunicao: document.getElementById('tipoMunicao'),
+    resultado: document.getElementById('resultado'),
+    resultadoQuantidade: document.getElementById('resultadoQuantidade'),
+    mensagemSucesso: document.getElementById('mensagemSucesso'),
+    mensagemErro: document.getElementById('mensagemErro')
+};
 
+const precos = {
+    pistola: 1100,
+    fuzil: 720,
+    sub: 720,
+    escopeta: 11000,
+    sniper: 70000
+};
+
+// Event listener for discount checkbox
+formElements.aplicarDesconto.addEventListener('change', function() {
+    const { descontoPredefinido, desconto } = formElements;
     if (this.checked) {
         descontoPredefinido.disabled = false;
         desconto.disabled = false;
@@ -11,30 +36,43 @@ document.getElementById('aplicarDesconto').addEventListener('change', function()
         descontoPredefinido.value = "";
         desconto.value = "";
     }
+    calcular();
+    calcularQuantidade();
+});
+
+// Add event listeners to all relevant inputs and selects for dynamic updates
+const inputs = [
+    formElements.pistola, formElements.fuzil, formElements.sub, formElements.escopeta,
+    formElements.sniper, formElements.desconto, formElements.valorDesejado, formElements.tipoMunicao
+];
+
+inputs.forEach(input => {
+    input.addEventListener('input', () => {
+        calcular();
+        calcularQuantidade();
+    });
+});
+
+formElements.descontoPredefinido.addEventListener('change', () => {
+    calcular();
+    calcularQuantidade();
 });
 
 function calcular() {
-    const precos = {
-        pistola: 110000 / 100,
-        fuzil: 72000 / 100,
-        sub: 72000 / 100,
-        escopeta: 165000 / 15,
-        sniper: 700000 / 10
-    };
-
     const quantidade = {
-        pistola: parseInt(document.getElementById('pistola').value) || 0,
-        fuzil: parseInt(document.getElementById('fuzil').value) || 0,
-        sub: parseInt(document.getElementById('sub').value) || 0,
-        escopeta: parseInt(document.getElementById('escopeta').value) || 0,
-        sniper: parseInt(document.getElementById('sniper').value) || 0
+        pistola: parseInt(formElements.pistola.value) || 0,
+        fuzil: parseInt(formElements.fuzil.value) || 0,
+        sub: parseInt(formElements.sub.value) || 0,
+        escopeta: parseInt(formElements.escopeta.value) || 0,
+        sniper: parseInt(formElements.sniper.value) || 0
     };
 
     let valido = true;
     let totalQuantidade = 0;
+    let total = 0;
 
-    for (let key in quantidade) {
-        const input = document.getElementById(key);
+    Object.keys(quantidade).forEach(key => {
+        const input = formElements[key];
         const erroMsg = document.getElementById(`erro${capitalize(key)}`);
         if (quantidade[key] < 0 || isNaN(quantidade[key])) {
             erroMsg.innerText = `Por favor, insira um número válido para a quantidade de munição de ${key}.`;
@@ -45,120 +83,79 @@ function calcular() {
             input.classList.remove('invalid');
         }
         totalQuantidade += quantidade[key];
-    }
+        total += quantidade[key] * precos[key];
+    });
 
     if (totalQuantidade === 0) {
-        document.getElementById('mensagemErro').innerText = "Por favor, insira pelo menos uma quantidade de munição.";
+        formElements.mensagemErro.innerText = "Por favor, insira pelo menos uma quantidade de munição.";
+        formElements.resultado.innerText = "";
         return;
     } else {
-        document.getElementById('mensagemErro').innerText = "";
+        formElements.mensagemErro.innerText = "";
     }
 
     if (!valido) {
         return;
     }
 
-    let total = 
-        (quantidade.pistola * precos.pistola) +
-        (quantidade.fuzil * precos.fuzil) +
-        (quantidade.sub * precos.sub) +
-        (quantidade.escopeta * precos.escopeta) +
-        (quantidade.sniper * precos.sniper);
+    total = aplicarDesconto(total);
 
-    const aplicarDesconto = document.getElementById('aplicarDesconto').checked;
-    const descontoPredefinido = document.getElementById('descontoPredefinido').value;
-    const desconto = document.getElementById('desconto').value;
+    formElements.resultado.innerText = `Total: R$${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    formElements.mensagemSucesso.innerText = "Cálculo realizado com sucesso!";
+    formElements.mensagemSucesso.style.display = 'block';
 
-    let descontoPercentual = 0;
-    if (aplicarDesconto) {
-        if (descontoPredefinido) {
-            descontoPercentual = parseFloat(descontoPredefinido);
-        } else if (desconto) {
-            descontoPercentual = parseFloat(desconto);
-        }
-
-        if (descontoPercentual < 0 || descontoPercentual > 100 || isNaN(descontoPercentual)) {
-            const erroDesconto = document.getElementById('erroDesconto');
-            erroDesconto.innerText = "Por favor, insira uma porcentagem de desconto válida entre 0 e 100.";
-            document.getElementById('desconto').classList.add('invalid');
-            return;
-        } else {
-            document.getElementById('erroDesconto').innerText = '';
-            document.getElementById('desconto').classList.remove('invalid');
-        }
-    }
-
-    if (descontoPercentual > 0) {
-        total -= total * (descontoPercentual / 100);
-    }
-
-    document.getElementById('resultado').innerText = `Total: R$${total.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-    document.getElementById('mensagemSucesso').innerText = "Cálculo realizado com sucesso!";
-    document.getElementById('mensagemSucesso').style.display = 'block';
-
-    salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, desconto);
+    salvarConfiguracoes(quantidade, formElements.aplicarDesconto.checked, formElements.descontoPredefinido.value, formElements.desconto.value);
 }
 
 function calcularQuantidade() {
-    const precos = {
-        pistola: 110000 / 100,
-        fuzil: 72000 / 100,
-        sub: 72000 / 100,
-        escopeta: 165000 / 15,
-        sniper: 700000 / 10
-    };
-
-    const valorDesejado = parseFloat(document.getElementById('valorDesejado').value) || 0;
-    const tipoMunicao = document.getElementById('tipoMunicao').value;
+    const valorDesejado = parseFloat(formElements.valorDesejado.value) || 0;
+    const tipoMunicao = formElements.tipoMunicao.value;
 
     if (valorDesejado <= 0 || isNaN(valorDesejado)) {
-        document.getElementById('resultadoQuantidade').innerText = "Por favor, insira um valor válido.";
+        formElements.resultadoQuantidade.innerText = "Por favor, insira um valor válido.";
         return;
     }
 
-    const aplicarDesconto = document.getElementById('aplicarDesconto').checked;
-    const descontoPredefinido = document.getElementById('descontoPredefinido').value;
-    const desconto = document.getElementById('desconto').value;
+    let precoPorUnidade = precos[tipoMunicao];
+    precoPorUnidade = aplicarDesconto(precoPorUnidade);
 
+    const quantidade = Math.floor(valorDesejado / precoPorUnidade);
+
+    formElements.resultadoQuantidade.innerText = `R$${valorDesejado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} compram ${quantidade} munições de ${tipoMunicao}.`;
+}
+
+function aplicarDesconto(valor) {
     let descontoPercentual = 0;
-    if (aplicarDesconto) {
-        if (descontoPredefinido) {
-            descontoPercentual = parseFloat(descontoPredefinido);
-        } else if (desconto) {
-            descontoPercentual = parseFloat(desconto);
+    if (formElements.aplicarDesconto.checked) {
+        if (formElements.descontoPredefinido.value) {
+            descontoPercentual = parseFloat(formElements.descontoPredefinido.value);
+        } else if (formElements.desconto.value) {
+            descontoPercentual = parseFloat(formElements.desconto.value);
         }
 
         if (descontoPercentual < 0 || descontoPercentual > 100 || isNaN(descontoPercentual)) {
-            document.getElementById('resultadoQuantidade').innerText = "Por favor, insira uma porcentagem de desconto válida entre 0 e 100.";
-            return;
+            formElements.mensagemErro.innerText = "Por favor, insira uma porcentagem de desconto válida entre 0 e 100.";
+            return valor;
         }
+
+        return valor - (valor * (descontoPercentual / 100));
     }
-
-    const precoPorUnidade = precos[tipoMunicao];
-    let precoFinalPorUnidade = precoPorUnidade;
-
-    if (descontoPercentual > 0) {
-        precoFinalPorUnidade -= precoFinalPorUnidade * (descontoPercentual / 100);
-    }
-
-    const quantidade = Math.floor(valorDesejado / precoFinalPorUnidade);
-
-    document.getElementById('resultadoQuantidade').innerText = `R$${valorDesejado.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 })} compram ${quantidade} munições de ${tipoMunicao}.`;
+    return valor;
 }
 
 function limpar() {
     document.getElementById('municaoForm').reset();
-    document.getElementById('aplicarDesconto').checked = false;
-    document.getElementById('descontoPredefinido').value = "";
-    document.getElementById('desconto').value = "";
-    document.getElementById('descontoPredefinido').disabled = true;
-    document.getElementById('desconto').disabled = true;
-    document.getElementById('valorDesejado').value = "";
-    document.getElementById('tipoMunicao').value = "pistola";
-    document.getElementById('resultado').innerText = "";
-    document.getElementById('resultadoQuantidade').innerText = "";
-    document.getElementById('mensagemSucesso').innerText = "";
-    document.getElementById('mensagemErro').innerText = "";
+    formElements.aplicarDesconto.checked = false;
+    formElements.descontoPredefinido.value = "";
+    formElements.desconto.value = "";
+    formElements.descontoPredefinido.disabled = true;
+    formElements.desconto.disabled = true;
+    formElements.valorDesejado.value = "";
+    formElements.tipoMunicao.value = "pistola";
+    formElements.resultado.innerText = "";
+    formElements.resultadoQuantidade.innerText = "";
+    formElements.mensagemSucesso.innerText = "";
+    formElements.mensagemErro.innerText = "";
     document.querySelectorAll('input').forEach(input => input.classList.remove('invalid'));
     document.querySelectorAll('small.error-message').forEach(small => small.innerText = "");
     localStorage.removeItem('configuracoesMunicao');
@@ -170,8 +167,8 @@ function salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, d
         aplicarDesconto,
         descontoPredefinido,
         desconto,
-        valorDesejado: document.getElementById('valorDesejado').value,
-        tipoMunicao: document.getElementById('tipoMunicao').value
+        valorDesejado: formElements.valorDesejado.value,
+        tipoMunicao: formElements.tipoMunicao.value
     };
     localStorage.setItem('configuracoesMunicao', JSON.stringify(configuracoes));
 }
@@ -179,29 +176,26 @@ function salvarConfiguracoes(quantidade, aplicarDesconto, descontoPredefinido, d
 function carregarConfiguracoes() {
     const configuracoes = JSON.parse(localStorage.getItem('configuracoesMunicao'));
     if (configuracoes) {
-        document.getElementById('pistola').value = configuracoes.quantidade.pistola || 0;
-        document.getElementById('fuzil').value = configuracoes.quantidade.fuzil || 0;
-        document.getElementById('sub').value = configuracoes.quantidade.sub || 0;
-        document.getElementById('escopeta').value = configuracoes.quantidade.escopeta || 0;
-        document.getElementById('sniper').value = configuracoes.quantidade.sniper || 0;
+        formElements.pistola.value = configuracoes.quantidade.pistola || 0;
+        formElements.fuzil.value = configuracoes.quantidade.fuzil || 0;
+        formElements.sub.value = configuracoes.quantidade.sub || 0;
+        formElements.escopeta.value = configuracoes.quantidade.escopeta || 0;
+        formElements.sniper.value = configuracoes.quantidade.sniper || 0;
 
-        document.getElementById('aplicarDesconto').checked = configuracoes.aplicarDesconto;
-        const descontoPredefinido = document.getElementById('descontoPredefinido');
-        const desconto = document.getElementById('desconto');
-
+        formElements.aplicarDesconto.checked = configuracoes.aplicarDesconto;
         if (configuracoes.aplicarDesconto) {
-            descontoPredefinido.disabled = false;
-            desconto.disabled = false;
+            formElements.descontoPredefinido.disabled = false;
+            formElements.desconto.disabled = false;
         } else {
-            descontoPredefinido.disabled = true;
-            desconto.disabled = true;
+            formElements.descontoPredefinido.disabled = true;
+            formElements.desconto.disabled = true;
         }
 
-        descontoPredefinido.value = configuracoes.descontoPredefinido || "";
-        desconto.value = configuracoes.desconto || "";
+        formElements.descontoPredefinido.value = configuracoes.descontoPredefinido || "";
+        formElements.desconto.value = configuracoes.desconto || "";
 
-        document.getElementById('valorDesejado').value = configuracoes.valorDesejado || "";
-        document.getElementById('tipoMunicao').value = configuracoes.tipoMunicao || "pistola";
+        formElements.valorDesejado.value = configuracoes.valorDesejado || "";
+        formElements.tipoMunicao.value = configuracoes.tipoMunicao || "pistola";
     }
 }
 
