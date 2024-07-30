@@ -141,7 +141,7 @@ button:hover {
 }
 
 #resultado, #resultadoQuantidade {
-    color: red;
+    color: yellow;
     margin-top: 20px;
     font-size: 1em;
 }
