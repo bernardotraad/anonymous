@@ -85,13 +85,14 @@ label, input, select {
 }
 
 .checkbox-container {
-    margin-right: 50px;
     display: flex;
     align-items: center;
+    justify-content: flex-start; /* Aligns the checkbox to the left */
 }
 
 .checkbox-container input {
-    margin-right: -150px;
+    margin-left: 0px;
+    margin-right: -200px;
     transform: scale(1.2);
 }
 
@@ -141,7 +142,7 @@ button:hover {
 }
 
 #resultado, #resultadoQuantidade {
-    color: yellow;
+    color: red;
     margin-top: 20px;
     font-size: 1em;
 }
@@ -163,6 +164,14 @@ hr {
     .form-column {
         min-width: 100%;
         margin: 10px 0;
+    }
+
+    .checkbox-container {
+        justify-content: center; /* Aligns the checkbox to the center on small screens */
+    }
+
+    .checkbox-container input {
+        margin-right: 5px;
     }
 }
 
