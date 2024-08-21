@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anonymous - Calculadora de Munição</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-NNVSCCQJZ8"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-NNVSCCQJZ8');
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="form-titulo">Calculadora de Vendas</h1>
+        <div class="form-container">
+            <div class="form-column">
+                <h2>Tipo de Munição</h2>
+                <form id="municaoForm">
+                    <label for="pistola">Munição de Pistola (100 = R$110k):</label>
+                    <input type="number" id="pistola" name="pistola" placeholder="Quantidade de pistola" min="0">
+                    <small id="erroPistola" class="error-message"></small><br>
+
+                    <label for="fuzil">Munição de Fuzil (100 = R$72k):</label>
+                    <input type="number" id="fuzil" name="fuzil" placeholder="Quantidade de fuzil" min="0">
+                    <small id="erroFuzil" class="error-message"></small><br>
+
+                    <label for="sub">Munição de Sub (100 = R$72k):</label>
+                    <input type="number" id="sub" name="sub" placeholder="Quantidade de sub" min="0">
+                    <small id="erroSub" class="error-message"></small><br>
+
+                    <label for="escopeta">Munição de Escopeta (15 = R$165k):</label>
+                    <input type="number" id="escopeta" name="escopeta" placeholder="Quantidade de escopeta" min="0">
+                    <small id="erroEscopeta" class="error-message"></small><br>
+
+                    <label for="sniper">Munição de Sniper (10 = R$700k):</label>
+                    <input type="number" id="sniper" name="sniper" placeholder="Quantidade de sniper" min="0">
+                    <small id="erroSniper" class="error-message"></small><br>
+                </form>
+                <hr>
+                <div id="resultado"></div>
+                <div id="mensagemSucesso" class="success-message"></div>
+                <div id="mensagemErro" class="error-message"></div>
+            </div>
+            <div class="form-column">
+                <h2>Descontos</h2>
+                <form>
+                    <div class="checkbox-container">
+                        <input type="checkbox" id="aplicarDesconto" name="aplicarDesconto">
+                        <label for="aplicarDesconto">Aplicar Desconto</label>
+                    </div><br>
+                    <label for="descontoPredefinido">Desconto Predefinido:</label>
+                    <select id="descontoPredefinido" name="descontoPredefinido" disabled>
+                        <option value="">Desconto</option>
+                        <option value="50">50% (parcerias)</option>
+                        <option value="60">60% (parcerias - chefes)</option>
+                    </select><br>
+
+                    <label for="desconto">Desconto Personalizado:</label>
+                    <input type="number" id="desconto" name="desconto" placeholder="Porcentagem de desconto" min="0" max="100" disabled>
+                    <small id="erroDesconto" class="error-message"></small><br>
+                </form>
+                <hr>
+                <h2>Quantidade por Valor</h2>
+                <form>
+                    <label for="valorDesejado">Valor Desejado:</label>
+                    <input type="number" id="valorDesejado" name="valorDesejado" placeholder="Valor em R$" min="0">
+                    <label for="tipoMunicao">Tipo de Munição:</label>
+                    <select id="tipoMunicao" name="tipoMunicao">
+                        <option value="pistola">Pistola</option>
+                        <option value="fuzil">Fuzil</option>
+                        <option value="sub">Sub-metralhadora</option>
+                        <option value="escopeta">Escopeta</option>
+                        <option value="sniper">Sniper</option>
+                    </select><br><br>
+                    <button type="button" onclick="calcularQuantidade()">Calcular Quantidade</button>
+                </form>
+                <div id="resultadoQuantidade"></div>
+                <hr>
+            </div>
+        </div>
+        <div class="button-container">
+            <button type="button" onclick="limpar()">Limpar</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

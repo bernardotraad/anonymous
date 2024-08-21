@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;700&display=swap');
 
 body {
-    background-color: #121212;
-    font-family: 'Open Sans', sans-serif;
-    font-size: small;
+    background-color: #000000;
+    font-family: 'Source Code Pro', monospace;
+    font-size: 14px; /* Reduced font size */
     color: #ffffff;
     line-height: 1.5;
     margin: 0;
@@ -12,20 +12,8 @@ body {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-}
-
-body::before {  
-    content: "";
-    background-image: url('imgs/bg.png');
+    background: url('imgs/bg.png') no-repeat center center fixed;
     background-size: cover;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    opacity: 0.5;
-    z-index: -1;
 }
 
 .container {
@@ -34,15 +22,21 @@ body::before {
     max-width: 800px;
     padding: 20px;
     box-sizing: border-box;
+    background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px #ffffff; /* Green neon glow */
 }
 
 h1 {
-    font-size: 2em;
-    margin-bottom: 10px;
+    font-size: 2em; /* Reduced font size */
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 0 0 10px #ffffff; /* Green neon glow */
 }
 
 p {
-    font-size: 1em;
+    font-size: 1em; /* Reduced font size */
     margin-bottom: 20px;
 }
 
@@ -55,22 +49,22 @@ p {
 
 .form-column {
     flex: 1;
-    padding: 10px;
+    padding: 20px;
     min-width: 300px;
-    background-color: #2c2c2c;
+    background-color: #0a0a0a; /* Dark background */
+    border: 1px solid #ffffff;
     border-radius: 10px;
     margin: 10px;
     box-sizing: border-box;
+    opacity: 0.9;
+    box-shadow: 0 0 10px #ffffff; /* Green neon glow */
 }
 
-.form-titulo {
-    flex: 1;
-    padding: 10px;
-    min-width: 300px;
-    background-color: #2c2c2c;
-    border-radius: 10px;
-    margin: 10px;
-    box-sizing: border-box;
+h2 {
+    font-size: 1.5em; /* Reduced font size */
+    margin-bottom: 15px;
+    color: #ffffff;
+    text-shadow: 0 0 10px #ffffff; /* Green neon glow */
 }
 
 form {
@@ -78,22 +72,27 @@ form {
 }
 
 label, input, select {
-    display: inline-block;
+    display: block;
     margin: 10px auto;
     width: 90%;
     max-width: 300px;
-    margin-bottom: 0;
-    vertical-align: middle;
+    color: #ffffff;
 }
 
-.checkbox-container input,
-.checkbox-container label {
-    margin: 5px;
-    display: inline;
-    margin-bottom: 0; /* I added this after I posted my reply */
-    vertical-align: center; /* Fixes any weird issues in Firefox and IE */
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start; /* Aligns the checkbox to the left */
+    margin: 10px auto;
+    width: 100%;
+    max-width: 5em;
 }
 
+.checkbox-container input {
+    margin-right: 10px;
+    transform: scale(1.2);
+    accent-color: #ffffff; /* Green checkbox */
+}
 
 input, select {
     padding: 10px;
@@ -101,7 +100,15 @@ input, select {
     border: 1px solid #444;
     color: white;
     font-size: 1em;
+    border-radius: 5px;
     box-sizing: border-box;
+    transition: border-color 0.3s;
+    outline: none;
+}
+
+input:focus, select:focus {
+    border-color: #ffffff;
+    box-shadow: 0 0 10px #ffffff; /* Green neon glow */
 }
 
 input.invalid, select.invalid {
@@ -110,13 +117,13 @@ input.invalid, select.invalid {
 
 .error-message {
     color: red;
-    font-size: 1em;
+    font-size: 0.8em; /* Reduced font size */
     height: 1em;
 }
 
 .success-message {
     color: green;
-    font-size: 1.2em;
+    font-size: 1em; /* Reduced font size */
     margin-top: 20px;
     display: none;
 }
@@ -128,16 +135,20 @@ input.invalid, select.invalid {
 }
 
 button {
-    padding: 10px 20px;
+    padding: 15px 30px;
     background-color: #444;
     border: none;
     color: white;
     cursor: pointer;
     font-size: 1em;
+    border-radius: 5px;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    outline: none;
 }
 
 button:hover {
     background-color: #666;
+    box-shadow: 0 0 10px #ffffff; /* Green neon glow */
 }
 
 #resultado, #resultadoQuantidade {
@@ -153,11 +164,11 @@ hr {
 
 @media (max-width: 600px) {
     h1 {
-        font-size: 1.5em;
+        font-size: 1.5em; /* Reduced font size */
     }
 
     p, label, input, select, button, .error-message, .success-message {
-        font-size: 0.9em;
+        font-size: 0.9em; /* Reduced font size */
     }
 
     .form-column {
@@ -176,10 +187,10 @@ hr {
 
 @media (max-width: 400px) {
     h1 {
-        font-size: 1.2em;
+        font-size: 1.2em; /* Reduced font size */
     }
 
     p, label, input, select, button, .error-message, .success-message {
-        font-size: 0.8em;
+        font-size: 0.8em; /* Reduced font size */
     }
 }
